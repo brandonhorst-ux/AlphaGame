@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Alphabet Sound & Image Game</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+    img {
+      max-width: 60vw;
+      max-height: 60vh;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .hint {
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img id="letterImage" alt="Letter Image" />
+    <div class="hint">Press any letter key (A–Z)</div>
+  </div>
+
+  <script>
+    const imageElement = document.getElementById("letterImage");
+    let isPlaying = false;
+
+    document.addEventListener("keydown", (event) => {
+      if (isPlaying) return;
+
+      const key = event.key.toLowerCase();
+      if (!key.match(/^[a-z]$/)) return;
+
+      isPlaying = true;
+
+      const imagePath = `images/${key}.png`;
+      const soundPath = `sounds/${key}.mp3`;
+
+      imageElement.src = imagePath;
+      imageElement.style.display = "block";
+
+      const audio = new Audio(soundPath);
+      audio.play();
+
+      audio.onended = () => {
+        isPlaying = false;
+      };
+
+      audio.onerror = () => {
+        console.error("Missing sound file:", soundPath);
+        isPlaying = false;
+      };
+    });
+  </script>
+</body>
+</html>
